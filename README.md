@@ -1,8 +1,6 @@
 # Cresco 📈
 **Your Intelligent Personal Finance Companion**
 
-![Cresco Banner](https://via.placeholder.com/1200x400?text=Cresco+-+AI+Personal+Finance)
-
 Cresco is a modern, AI-powered personal finance dashboard built to help students and professionals track expenses, manage budgets, discover resources, and achieve savings goals. By leveraging cutting-edge LLMs (Google Gemini & Groq), Cresco transforms mundane financial tracking into an engaging, proactive, and personalized experience.
 
 ---

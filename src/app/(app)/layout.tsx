@@ -35,8 +35,6 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[11px] text-muted-foreground">
           <span>© 2026 Cresco · AI Financial Co-Pilot</span>
           <div className="flex items-center gap-3">
-            <span>🔒 AES-256 encrypted</span>
-            <span>·</span>
             <span>Student first · consent-based</span>
           </div>
         </div>

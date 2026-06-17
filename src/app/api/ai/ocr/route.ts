@@ -13,7 +13,8 @@ Expected JSON schema:
   "amount": <number>, // The total final amount on the receipt. Do not include currency symbols. Null if not found.
   "merchant": <string>, // The name of the store or merchant. Null if not found.
   "description": <string>, // A very brief summary (e.g. "Groceries", "Uber ride", "Coffee"). Null if not found.
-  "date": <string> // Date of the receipt in YYYY-MM-DD format. Null if not found.
+  "date": <string>, // Date of the receipt in YYYY-MM-DD format. Null if not found.
+  "category_name": <string> // Pick the most relevant category from this list: Food & Dining, Transport, Shopping, Education, Entertainment, Subscriptions, Health, Other. Null if none fit.
 }
 `
 
@@ -28,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     const response = await groq.chat.completions.create({
-      model: 'llama-3.2-11b-vision-preview',
+      model: 'meta-llama/llama-4-scout-17b-16e-instruct',
       messages: [
         {
           role: 'user',

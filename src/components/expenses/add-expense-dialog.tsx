@@ -57,18 +57,24 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
         body: JSON.stringify({ type: 'nl', text: nlText }),
       })
       const data = await res.json()
-      if (data.success) {
-        setNlResult(data.data)
-        if (data.data.amount) setAmount(String(data.data.amount))
-        if (data.data.description) setDescription(data.data.description)
-        if (data.data.merchant) setMerchant(data.data.merchant)
-        if (data.data.category_name) {
-          const match = categories.find(
-            (c) => c.name.toLowerCase() === data.data.category_name?.toLowerCase()
-          )
-          if (match) setCategoryId(match.id)
+      if (data.success && data.data) {
+        const parsed = data.data
+        setNlResult(parsed)
+        setAmount(parsed.amount?.toString() || '')
+        setMerchant(parsed.merchant || '')
+        setDescription(parsed.description || '')
+        if (parsed.expense_date) setDate(parsed.expense_date)
+        
+        // Match category name to get ID
+        if (parsed.category_name) {
+          const matched = categories.find(c => c.name.toLowerCase() === parsed.category_name.toLowerCase())
+          if (matched) setCategoryId(matched.id)
+          else setCategoryId('')
+        } else {
+          setCategoryId('')
         }
-        toast.success('AI parsed your expense!')
+
+        toast.success('Parsed successfully!')
       } else {
         toast.error('Could not parse. Try typing more details.')
       }
@@ -97,10 +103,18 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
         if (data.success && data.data) {
           const parsed = data.data
           setNlResult(parsed)
+          
           if (parsed.amount) setAmount(String(parsed.amount))
           if (parsed.description) setDescription(parsed.description)
           if (parsed.merchant) setMerchant(parsed.merchant)
           if (parsed.date) setDate(parsed.date)
+          
+          // Match category name to get ID
+          if (parsed.category_name) {
+            const matched = categories.find(c => c.name.toLowerCase() === parsed.category_name.toLowerCase())
+            if (matched) setCategoryId(matched.id)
+          }
+
           toast.success('Receipt scanned successfully!')
         } else {
           toast.error(data.error || 'Failed to read receipt.')
@@ -115,8 +129,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
     }
   }
 
-  async function handleManualSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+  async function saveExpense() {
     const parsed = parseFloat(amount)
     if (isNaN(parsed) || parsed <= 0) {
       toast.error('Please enter a valid amount')
@@ -139,6 +152,11 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
         toast.error(result.error)
       }
     })
+  }
+
+  async function handleManualSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    saveExpense()
   }
 
   function resetForm() {
@@ -238,8 +256,26 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
                   {nlResult.amount && <p>💰 Amount: <strong>{nlResult.amount}</strong></p>}
                   {nlResult.merchant && <p>🏪 Merchant: <strong>{nlResult.merchant}</strong></p>}
                   {nlResult.category_name && <p>📂 Category: <strong>{nlResult.category_name}</strong></p>}
-                  <p className="text-muted-foreground text-xs pt-1">
-                    Form pre-filled. Switch to Manual tab to review and save.
+                  <div className="pt-3 flex items-center gap-2">
+                    <Button 
+                      onClick={() => setNlResult(null)} 
+                      variant="outline" 
+                      className="flex-1"
+                      disabled={isPending}
+                    >
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={saveExpense} 
+                      disabled={isPending} 
+                      className="flex-1 font-bold gap-2"
+                    >
+                      {isPending && <Loader2 className="h-4 w-4 animate-spin" />}
+                      Save Expense
+                    </Button>
+                  </div>
+                  <p className="text-muted-foreground text-[10px] text-center pt-1">
+                    Or switch to Manual tab to edit details before saving.
                   </p>
                 </motion.div>
               )}

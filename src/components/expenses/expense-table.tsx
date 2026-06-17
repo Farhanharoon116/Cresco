@@ -158,7 +158,17 @@ export function ExpenseTable({ expenses, categories, currency = 'USD', currentPa
                         <div className="flex items-center gap-2">
                           <Select value={editCat} onValueChange={(v) => v && setEditCat(v)}>
                             <SelectTrigger className="h-8 w-40">
-                              <SelectValue />
+                              {(() => {
+                                const selectedCat = categories.find(c => c.id === editCat)
+                                return selectedCat ? (
+                                  <span className="flex items-center gap-2 text-sm">
+                                    <span className="text-base leading-none">{selectedCat.icon}</span>
+                                    <span className="truncate">{selectedCat.name}</span>
+                                  </span>
+                                ) : (
+                                  <SelectValue placeholder="Select category" />
+                                )
+                              })()}
                             </SelectTrigger>
                             <SelectContent>
                               {categories.map(c => (
@@ -256,7 +266,19 @@ export function ExpenseTable({ expenses, categories, currency = 'USD', currentPa
             <div className="space-y-2">
               <Label>Category</Label>
               <Select value={editCategoryId} onValueChange={(v) => v && setEditCategoryId(v)}>
-                <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                <SelectTrigger>
+                  {(() => {
+                    const selectedCategory = categories.find(c => c.id === editCategoryId)
+                    return selectedCategory ? (
+                      <span className="flex items-center gap-2 text-sm">
+                        <span className="text-base leading-none">{selectedCategory.icon}</span>
+                        <span className="truncate">{selectedCategory.name}</span>
+                      </span>
+                    ) : (
+                      <SelectValue placeholder="Select category" />
+                    )
+                  })()}
+                </SelectTrigger>
                 <SelectContent>
                   {categories.map(c => (
                     <SelectItem key={c.id} value={c.id}>

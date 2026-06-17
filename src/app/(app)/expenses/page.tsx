@@ -23,10 +23,27 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
     supabase.from('users').select('currency').eq('id', user!.id).single(),
   ])
 
-  const categories = categoriesRes.data ?? []
+  let categories = categoriesRes.data ?? []
   const { expenses = [], total = 0 } = expensesRes.success ? expensesRes.data : {}
   const currency = profileData.data?.currency ?? 'USD'
   const recurring = recurringRes.success ? recurringRes.data : []
+
+  const { DEFAULT_CATEGORIES } = await import('@/lib/constants')
+  const existingNames = categories.map(c => c.name)
+  const toInsert = DEFAULT_CATEGORIES.filter(c => !existingNames.includes(c.name)).map(c => ({
+    user_id: user!.id,
+    name: c.name,
+    icon: c.icon,
+    color: c.color,
+    is_default: true
+  }))
+
+  if (toInsert.length > 0) {
+    const { data: inserted } = await supabase.from('categories').insert(toInsert).select()
+    if (inserted) {
+      categories = [...categories, ...inserted].sort((a, b) => a.name.localeCompare(b.name))
+    }
+  }
 
   return (
     <div className="space-y-6">
