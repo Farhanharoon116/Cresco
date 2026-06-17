@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Plus, Sparkles, Loader2, Check } from 'lucide-react'
+import { Plus, Sparkles, Loader2, Check, Camera, Upload } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -34,6 +34,8 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
     category_name: string | null
   } | null>(null)
   const [nlLoading, setNlLoading] = useState(false)
+  const [ocrLoading, setOcrLoading] = useState(false)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
 
   // Manual form state
   const [amount, setAmount] = useState('')
@@ -74,6 +76,42 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
       toast.error('AI parsing failed. Use manual entry.')
     } finally {
       setNlLoading(false)
+    }
+  }
+
+  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    
+    setOcrLoading(true)
+    try {
+      const reader = new FileReader()
+      reader.onloadend = async () => {
+        const base64String = reader.result as string
+        const res = await fetch('/api/ai/ocr', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: base64String }),
+        })
+        const data = await res.json()
+        if (data.success && data.data) {
+          const parsed = data.data
+          setNlResult(parsed)
+          if (parsed.amount) setAmount(String(parsed.amount))
+          if (parsed.description) setDescription(parsed.description)
+          if (parsed.merchant) setMerchant(parsed.merchant)
+          if (parsed.date) setDate(parsed.date)
+          toast.success('Receipt scanned successfully!')
+        } else {
+          toast.error(data.error || 'Failed to read receipt.')
+        }
+        setOcrLoading(false)
+        if (fileInputRef.current) fileInputRef.current.value = ''
+      }
+      reader.readAsDataURL(file)
+    } catch (err) {
+      toast.error('Failed to process image.')
+      setOcrLoading(false)
     }
   }
 
@@ -136,7 +174,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
             <TabsTrigger value="manual" className="text-xs font-bold">Manual Entry</TabsTrigger>
             <TabsTrigger value="ai" className="text-xs font-bold gap-1.5">
               <Sparkles className="h-3.5 w-3.5" />
-              AI Magic
+              AI & Scan
             </TabsTrigger>
           </TabsList>
 
@@ -154,16 +192,38 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
                 className="resize-none"
               />
             </div>
-            <Button
-              onClick={parseNL}
-              disabled={nlLoading || !nlText.trim()}
-              className="w-full gap-2 font-bold"
-            >
-              {nlLoading
-                ? <><Loader2 className="h-4 w-4 animate-spin" /> Analyzing...</>
-                : <><Sparkles className="h-4 w-4" /> Parse with AI</>
-              }
-            </Button>
+            <div className="grid grid-cols-2 gap-3">
+              <Button
+                onClick={parseNL}
+                disabled={nlLoading || !nlText.trim() || ocrLoading}
+                className="w-full gap-2 font-bold"
+              >
+                {nlLoading
+                  ? <><Loader2 className="h-4 w-4 animate-spin" /> ...</>
+                  : <><Sparkles className="h-4 w-4" /> Parse Text</>
+                }
+              </Button>
+              
+              <input 
+                type="file" 
+                accept="image/*" 
+                className="hidden" 
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={ocrLoading || nlLoading}
+                className="w-full gap-2 font-bold border border-border"
+              >
+                {ocrLoading
+                  ? <><Loader2 className="h-4 w-4 animate-spin" /> Scanning...</>
+                  : <><Camera className="h-4 w-4" /> Scan Receipt</>
+                }
+              </Button>
+            </div>
 
             <AnimatePresence>
               {nlResult && (
