@@ -13,7 +13,16 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { signOut } from '@/actions/auth'
 
-const navItems = [
+import type { ElementType } from 'react'
+
+interface NavItem {
+  href: string
+  label: string
+  icon: ElementType
+  badge?: string
+}
+
+const navItems: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/budgets', label: 'Budget', icon: PiggyBank },
   { href: '/expenses', label: 'Expenses', icon: Receipt },
