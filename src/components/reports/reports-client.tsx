@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { motion } from 'motion/react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -26,13 +27,17 @@ export function ReportsClient({ reports, recommendations, currency = 'USD' }: {
 }) {
   const [generating, setGenerating] = useState(false)
   const [dismissed, setDismissed] = useState<Set<string>>(new Set())
+  const router = useRouter()
 
   async function generateReport() {
     setGenerating(true)
     try {
       const res = await fetch('/api/ai/analyze', { method: 'POST' })
       const data = await res.json()
-      if (data.success) { toast.success('Report generated! Refresh to see it.') }
+      if (data.success) { 
+        toast.success('Report generated!')
+        router.refresh()
+      }
       else toast.error(data.error ?? 'Generation failed')
     } catch { toast.error('Failed to generate report') }
     finally { setGenerating(false) }
@@ -47,7 +52,7 @@ export function ReportsClient({ reports, recommendations, currency = 'USD' }: {
 
   return (
     <Tabs defaultValue="reports">
-      <TabsList className="inline-flex h-10 w-auto flex-row items-center justify-center mb-6 rounded-xl bg-muted/50 p-1">
+      <TabsList className="inline-flex h-10 w-fit self-start flex-row items-center justify-center mb-6 rounded-xl bg-muted/50 p-1">
         <TabsTrigger value="reports" className="rounded-lg px-4 py-1.5 data-[state=active]:bg-background data-[state=active]:shadow-sm">Reports</TabsTrigger>
         <TabsTrigger value="savings" className="rounded-lg gap-1.5 px-4 py-1.5 data-[state=active]:bg-background data-[state=active]:shadow-sm">
           <Sparkles className="h-3.5 w-3.5" /> Savings Ideas
@@ -57,10 +62,6 @@ export function ReportsClient({ reports, recommendations, currency = 'USD' }: {
       {/* Reports Tab */}
       <TabsContent value="reports" className="space-y-4 mt-4">
         <div className="flex justify-end gap-3 no-print">
-          <Button variant="outline" onClick={() => window.print()} className="gap-2">
-            <Printer className="h-4 w-4" />
-            Export PDF
-          </Button>
           <Button onClick={generateReport} disabled={generating} className="gap-2">
             {generating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
             {generating ? 'Generating...' : 'Generate AI Report'}
@@ -120,6 +121,16 @@ export function ReportsClient({ reports, recommendations, currency = 'USD' }: {
                         </ul>
                       </div>
                     )}
+                    <div className="flex items-center gap-3 mt-6 pt-4 border-t border-border/50 no-print">
+                      <Button variant="outline" size="sm" onClick={() => window.print()} className="gap-1.5">
+                        <Printer className="h-3.5 w-3.5" />
+                        Export PDF
+                      </Button>
+                      <Button variant="secondary" size="sm" onClick={() => router.push('/assistant')} className="gap-1.5 bg-primary/10 text-primary hover:bg-primary/20 border border-primary/20">
+                        <Sparkles className="h-3.5 w-3.5" />
+                        Continue with Financial AI Chat
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.div>

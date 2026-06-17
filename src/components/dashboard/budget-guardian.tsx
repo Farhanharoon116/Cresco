@@ -8,19 +8,10 @@ interface BudgetGuardianProps {
   insight?: string | null
 }
 
-const DEFAULT_INSIGHTS = [
-  "Your food spending is 12% above average. Consider reducing snack expenses.",
-  "You're on track this month! 68% of budget used with 15 days remaining.",
-  "Transport costs are trending higher than usual — consider carpooling or transit.",
-  "Great job! Your savings rate is above average for a student.",
-]
-
 export function BudgetGuardianBanner({ insight }: BudgetGuardianProps) {
   const [dismissed, setDismissed] = useState(false)
 
-  const message = insight ?? DEFAULT_INSIGHTS[Math.floor(Math.random() * DEFAULT_INSIGHTS.length)]
-
-  if (dismissed) return null
+  if (dismissed || !insight) return null
 
   return (
     <AnimatePresence>
@@ -41,7 +32,7 @@ export function BudgetGuardianBanner({ insight }: BudgetGuardianProps) {
             <Sparkles className="h-3.5 w-3.5" />
             Budget Guardian Insight
           </p>
-          <p className="text-sm text-foreground/80 mt-0.5 leading-relaxed">{message}</p>
+          <p className="text-sm text-foreground/80 mt-0.5 leading-relaxed">{insight}</p>
         </div>
 
         {/* Actions */}

@@ -42,6 +42,25 @@ export default async function DashboardPage() {
   const categories = categoriesData.data ?? []
   const latestInsight = latestAlertData.data?.message ?? null
 
+  let currentInsight = latestInsight
+  if (!currentInsight && dashboard?.summary) {
+    const { total_spent, total_budget } = dashboard.summary
+    if (total_budget > 0) {
+      const percentage = Math.round((total_spent / total_budget) * 100)
+      const today = new Date()
+      const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+      const daysRemaining = daysInMonth - today.getDate()
+      
+      if (percentage >= 100) {
+        currentInsight = `You've exceeded your budget this month! ${percentage}% of budget used with ${daysRemaining} days remaining.`
+      } else if (percentage >= 80) {
+        currentInsight = `Watch out! You are approaching your limit. ${percentage}% of budget used with ${daysRemaining} days remaining.`
+      } else {
+        currentInsight = `You're on track this month! ${percentage}% of budget used with ${daysRemaining} days remaining.`
+      }
+    }
+  }
+
   // Greeting based on local time
   const hour = new Date().getHours()
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
@@ -81,7 +100,7 @@ export default async function DashboardPage() {
       />
 
       {/* Budget Guardian Insight Banner */}
-      <BudgetGuardianBanner insight={latestInsight} />
+      <BudgetGuardianBanner insight={currentInsight} />
 
       {/* Charts Row: Forecast + Spending Breakdown */}
       <div className="grid lg:grid-cols-5 gap-4">

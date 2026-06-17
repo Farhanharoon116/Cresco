@@ -85,8 +85,22 @@ export async function POST() {
       currency,
     })
 
+    // Delete existing report for this month to avoid duplicates
+    await supabase.from('monthly_reports').delete().eq('user_id', user.id).eq('month', month).eq('year', year)
+
     // Store forecast + recommendations in DB
     await Promise.all([
+      supabase.from('monthly_reports').insert({
+        user_id: user.id,
+        month,
+        year,
+        total_income: monthlyIncome,
+        total_spent: totalSpent,
+        total_saved: Math.max(0, monthlyIncome - totalSpent),
+        health_score: result.health_score,
+        suggestions: result.action_items,
+        narrative: result.summary,
+      }),
       supabase.from('forecasts').insert({
         user_id: user.id,
         predicted_balance: result.forecast.predicted_balance,

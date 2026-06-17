@@ -169,7 +169,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <Tabs defaultValue="manual" className="mt-2">
+        <Tabs defaultValue="manual" className="flex-col mt-2">
           <TabsList className="grid w-full grid-cols-2 h-9">
             <TabsTrigger value="manual" className="text-xs font-bold">Manual Entry</TabsTrigger>
             <TabsTrigger value="ai" className="text-xs font-bold gap-1.5">
