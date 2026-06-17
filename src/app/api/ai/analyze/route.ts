@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { runFinancialCoach } from '@/lib/ai/agents/coach'
 import { getUser } from '@/actions/auth'
 
-export async function POST(_req: NextRequest) {
+export async function POST() {
   try {
     const supabase = await createClient()
     const user = await getUser()

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useRef, ChangeEvent, FormEvent } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { Plus, Sparkles, Loader2, Check, Camera } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -35,7 +35,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
   } | null>(null)
   const [nlLoading, setNlLoading] = useState(false)
   const [ocrLoading, setOcrLoading] = useState(false)
-  const fileInputRef = React.useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Manual form state
   const [amount, setAmount] = useState('')
@@ -79,7 +79,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
     }
   }
 
-  async function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
     
@@ -109,13 +109,13 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
         if (fileInputRef.current) fileInputRef.current.value = ''
       }
       reader.readAsDataURL(file)
-    } catch (_err) {
+    } catch {
       toast.error('Failed to process image.')
       setOcrLoading(false)
     }
   }
 
-  async function handleManualSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleManualSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const parsed = parseFloat(amount)
     if (isNaN(parsed) || parsed <= 0) {

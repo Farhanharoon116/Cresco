@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
       // In case there is conversational text before/after JSON, extract the JSON block
       const jsonMatch = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/)
       parsed = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned)
-    } catch (_e) {
+    } catch {
       console.error('Failed to parse Groq response:', cleaned)
       throw new Error('Invalid JSON response from AI')
     }

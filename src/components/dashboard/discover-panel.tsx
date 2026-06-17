@@ -62,7 +62,7 @@ export function DiscoverPanel() {
             setHasLoaded(true)
             return
           }
-        } catch (_e) {
+        } catch {
           // ignore parsing error
         }
       }

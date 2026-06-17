@@ -20,7 +20,7 @@ export async function verifyJWT(token: string): Promise<SessionPayload | null> {
   try {
     const { payload } = await jwtVerify(token, encodedSecret)
     return payload as unknown as SessionPayload
-  } catch (_error) {
+  } catch {
     return null
   }
 }
