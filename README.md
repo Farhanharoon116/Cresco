@@ -16,10 +16,17 @@ Cresco is a modern, AI-powered personal finance dashboard built to help students
 
 ### 🤖 AI-Powered Insights
 - **Dual-Agent Architecture:** Utilizes Groq for lightning-fast tasks (categorization, NLP parsing) and Gemini for deep reasoning (reports, forecasting).
-- **Monthly Reports & Health Score:** Receive comprehensive monthly financial reports with a calculated "Financial Health Score" and personalized savings ideas.
-- **Intelligent Forecasting:** AI predicts your end-of-month balance based on your daily spending velocity and upcoming recurring expenses.
-- **Discover Tab (Recommendations):** An AI-curated discovery engine that recommends books, courses, tools, and games strictly tailored to your *remaining budget* and *personal interests*.
-- **Anomaly Detection:** Get instantly notified if an expense falls outside your typical spending patterns.
+
+#### 🧠 Integrated AI Agents
+Our platform employs specialized agents to handle specific financial workflows:
+- **Categorization (Groq):** Instantly tags every expense.
+- **NL Parser (Groq):** Understands natural language input.
+- **Budget Monitor (DB Trigger):** Fires alerts at budget thresholds.
+- **Forecast (Gemini):** Predicts your month-end balance based on daily spending velocity.
+- **Anomaly Detector (Groq):** Flags unusual spending patterns in real-time.
+- **Monthly Report (Gemini):** Generates comprehensive financial health reports.
+- **Recommendations (Gemini):** Personalizes savings opportunities and resources.
+- **Chat Assistant (Gemini):** Answers any financial question you might have.
 
 ### 🛡️ Secure Admin Portal
 - **Global Broadcasts:** Send platform-wide alerts and announcements to all users.

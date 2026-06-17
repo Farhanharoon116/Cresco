@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { signJWT, verifyJWT, SessionPayload } from '@/lib/auth/jwt'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 const ADMIN_SESSION_COOKIE = 'cresco_admin_session'
@@ -48,7 +48,7 @@ export async function getAdminDashboardData() {
     redirect('/admin/login')
   }
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   // We fetch standard stats assuming RLS allows anon select on these
   // The query `supabase.from('users').select('*')` might be restricted by RLS. 
@@ -76,7 +76,7 @@ export async function getAdminDashboardData() {
 export async function deleteUser(userId: string) {
   const session = await getAdminSession()
   if (!session) return { success: false, error: 'Unauthorized' }
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   
   const { error } = await supabase.from('users').delete().eq('id', userId)
   if (error) return { success: false, error: error.message }
@@ -93,7 +93,7 @@ export async function broadcastAlert(formData: FormData) {
   
   if (!title || !message) return { success: false, error: 'Title and message required' }
   
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   
   const { data: users, error: userError } = await supabase.from('users').select('id')
   if (userError || !users) return { success: false, error: 'Failed to fetch users' }

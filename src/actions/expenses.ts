@@ -32,8 +32,7 @@ export async function createExpense(data: unknown): Promise<ActionResult<Expense
     // Run budget monitor in the background — fires budget threshold alerts
     runBudgetMonitor(user.id).catch(console.error)
 
-    revalidatePath('/expenses')
-    revalidatePath('/dashboard')
+    revalidatePath('/', 'layout')
     return { success: true, data: expense as Expense }
   } catch (err) {
     return { success: false, ...toActionError(err) }
@@ -64,8 +63,7 @@ export async function updateExpense(id: string, data: unknown): Promise<ActionRe
     // Re-check budget thresholds after update
     runBudgetMonitor(user.id).catch(console.error)
 
-    revalidatePath('/expenses')
-    revalidatePath('/dashboard')
+    revalidatePath('/', 'layout')
     return { success: true, data: expense as Expense }
   } catch (err) {
     return { success: false, ...toActionError(err) }
@@ -85,8 +83,7 @@ export async function deleteExpense(id: string): Promise<ActionResult> {
       .eq('user_id', user.id)
 
     if (error) handleSupabaseError(error)
-    revalidatePath('/expenses')
-    revalidatePath('/dashboard')
+    revalidatePath('/', 'layout')
     return { success: true, data: undefined }
   } catch (err) {
     return { success: false, ...toActionError(err) }
@@ -155,8 +152,7 @@ export async function correctExpenseCategory(
       .single()
 
     if (error) handleSupabaseError(error)
-    revalidatePath('/expenses')
-    revalidatePath('/dashboard')
+    revalidatePath('/', 'layout')
     return { success: true, data: expense as Expense }
   } catch (err) {
     return { success: false, ...toActionError(err) }

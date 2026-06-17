@@ -99,6 +99,42 @@ export async function runBudgetMonitor(userId: string): Promise<void> {
       }
     }
 
+    // Check overall budget close to 0
+    const totalLimit = budgets.reduce((acc, b) => acc + b.limit_amount, 0)
+    const totalSpent = budgets.reduce((acc, b) => acc + b.spent_amount, 0)
+
+    if (totalLimit > 0) {
+      const totalPct = Math.round((totalSpent / totalLimit) * 100)
+      for (const threshold of [...BUDGET_ALERT_THRESHOLDS].reverse()) {
+        if (totalPct >= threshold && threshold >= 90) {
+          const alertKey = `total-${threshold}`
+          if (!alertedKeys.has(alertKey)) {
+            let severity: 'info' | 'warning' | 'critical' = 'critical'
+            let title = 'Overall Budget Warning'
+            let message = ''
+
+            if (threshold >= 100) {
+              title = '🚨 Total Budget Exceeded!'
+              message = `You've exceeded your total monthly budget of ${totalLimit}.`
+            } else {
+              title = '⚠️ Total Budget Almost Exhausted'
+              message = `You've spent ${totalPct}% of your total monthly budget. Only ${(totalLimit - totalSpent).toFixed(0)} left!`
+            }
+
+            newAlerts.push({
+              user_id: userId,
+              type: 'budget_threshold',
+              title,
+              message,
+              severity,
+              metadata: { budget_id: 'total', threshold, percentage: totalPct, category: 'Total' },
+            })
+            break
+          }
+        }
+      }
+    }
+
     if (newAlerts.length > 0) {
       await supabase.from('alerts').insert(newAlerts)
     }

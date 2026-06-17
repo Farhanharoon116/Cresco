@@ -14,11 +14,32 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false)
   const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+  const calculateStrength = (pw: string) => {
+    let score = 0
+    if (!pw) return 0
+    if (pw.length >= 8) score += 25
+    if (pw.match(/[A-Z]/)) score += 25
+    if (pw.match(/[0-9]/)) score += 25
+    if (pw.match(/[^A-Za-z0-9]/)) score += 25
+    return score
+  }
+  const strength = calculateStrength(password)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    
+    if (password !== confirmPassword) {
+      setError("Passwords do not match")
+      setLoading(false)
+      return
+    }
+
     const result = await signUp(new FormData(e.currentTarget))
     if (result && !result.success) {
       setError(result.error)
@@ -62,6 +83,8 @@ export default function SignupPage() {
               type={showPw ? 'text' : 'password'}
               placeholder="Min. 8 characters" required autoComplete="new-password"
               minLength={8}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
             />
             <button
               type="button"
@@ -70,6 +93,43 @@ export default function SignupPage() {
             >
               {showPw ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
+          </div>
+          
+          {password && (
+            <div className="space-y-1.5 mt-2">
+              <div className="flex gap-1 h-1">
+                {[25, 50, 75, 100].map((step) => (
+                  <div 
+                    key={step} 
+                    className={`flex-1 rounded-full ${
+                      strength >= step 
+                        ? strength <= 25 ? 'bg-red-500' 
+                          : strength <= 50 ? 'bg-amber-500' 
+                          : strength <= 75 ? 'bg-emerald-400' 
+                          : 'bg-emerald-600'
+                        : 'bg-muted'
+                    }`} 
+                  />
+                ))}
+              </div>
+              <p className="text-[10px] text-muted-foreground text-right font-medium">
+                {strength <= 25 ? 'Weak' : strength <= 50 ? 'Fair' : strength <= 75 ? 'Good' : 'Strong'}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="confirm_password">Confirm Password</Label>
+          <div className="relative">
+            <Input
+              id="confirm_password" name="confirm_password"
+              type={showPw ? 'text' : 'password'}
+              placeholder="Confirm your password" required autoComplete="new-password"
+              minLength={8}
+              value={confirmPassword}
+              onChange={e => setConfirmPassword(e.target.value)}
+            />
           </div>
         </div>
 

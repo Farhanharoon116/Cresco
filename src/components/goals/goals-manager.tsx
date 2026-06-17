@@ -56,8 +56,8 @@ export function GoalsManager({ goals, currency = 'USD' }: { goals: SavingsGoal[]
     <div className="space-y-4">
       <div className="flex justify-end">
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger>
-            <Button className="gap-2"><Plus className="h-4 w-4" /> New Goal</Button>
+          <DialogTrigger render={<Button className="gap-2" />}>
+            <Plus className="h-4 w-4" /> New Goal
           </DialogTrigger>
           <DialogContent className="sm:max-w-sm">
             <DialogHeader><DialogTitle>Create Savings Goal</DialogTitle></DialogHeader>

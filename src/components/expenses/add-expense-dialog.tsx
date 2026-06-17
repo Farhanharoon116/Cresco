@@ -171,12 +171,10 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
 
   return (
     <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) resetForm() }}>
-      {/* FIX: removed asChild to fix Base UI compilation error */}
-      <DialogTrigger>
-        <Button id="add-expense-btn" size="sm" className="gap-1.5 h-9 px-4 font-bold rounded-xl">
-          <Plus className="h-4 w-4" />
-          Add expense
-        </Button>
+      {/* FIX: use render prop instead of wrapping Button to prevent nested buttons */}
+      <DialogTrigger render={<Button id="add-expense-btn" size="sm" className="gap-1.5 h-9 px-4 font-bold rounded-xl" />}>
+        <Plus className="h-4 w-4" />
+        Add expense
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
