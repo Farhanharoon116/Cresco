@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
-import { Plus, Sparkles, Loader2, Check, Camera, Upload } from 'lucide-react'
+import { Plus, Sparkles, Loader2, Check, Camera } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -109,7 +109,7 @@ export function AddExpenseDialog({ categories, onSuccess }: ExpenseFormProps) {
         if (fileInputRef.current) fileInputRef.current.value = ''
       }
       reader.readAsDataURL(file)
-    } catch (err) {
+    } catch (_err) {
       toast.error('Failed to process image.')
       setOcrLoading(false)
     }

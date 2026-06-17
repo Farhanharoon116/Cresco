@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { categorizeExpense, parseNaturalLanguage } from '@/lib/ai/agents/categorize'
-import { chatMessageSchema } from '@/lib/validators'
 import { getUser } from '@/actions/auth'
 
 export async function POST(req: NextRequest) {

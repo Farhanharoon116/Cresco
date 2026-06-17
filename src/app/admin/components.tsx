@@ -7,7 +7,7 @@ import { broadcastAlert, deleteUser } from '@/actions/admin'
 import { toast } from 'sonner'
 import { motion, AnimatePresence } from 'motion/react'
 
-export function ExportCsvButton({ users }: { users: any[] }) {
+export function ExportCsvButton({ users }: { users: { id: string; email: string; full_name?: string | null; currency: string; onboarding_complete: boolean; created_at: string }[] }) {
   const handleExport = () => {
     if (users.length === 0) {
       toast.error('No users to export')

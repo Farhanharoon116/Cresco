@@ -77,7 +77,7 @@ export default async function AdminDashboardPage() {
                     </td>
                   </tr>
                 ) : (
-                  users.map((u: any) => (
+                  users.map((u: { id: string; email: string; full_name: string | null; currency: string; onboarding_complete: boolean; created_at: string }) => (
                     <tr key={u.id} className="bg-card hover:bg-muted/20 transition-colors">
                       <td className="px-4 py-3">
                         <div className="font-medium text-foreground">{u.full_name || 'Anonymous'}</div>

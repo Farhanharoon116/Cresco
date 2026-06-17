@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { motion } from 'motion/react'
 import { TrendingUp, Menu, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'

@@ -1,11 +1,10 @@
 'use server'
 
 import { createClient } from '@/lib/supabase/server'
-import { AuthError, DatabaseError, handleSupabaseError, toActionError } from '@/lib/errors'
+import { AuthError, handleSupabaseError, toActionError } from '@/lib/errors'
 import { onboardingSchema } from '@/lib/validators'
 import { getCurrentMonthRange } from '@/lib/utils'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 import type { ActionResult } from '@/types/ai'
 import { getUser } from '@/actions/auth'
 

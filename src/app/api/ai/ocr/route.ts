@@ -52,14 +52,14 @@ export async function POST(req: NextRequest) {
       // In case there is conversational text before/after JSON, extract the JSON block
       const jsonMatch = cleaned.match(/(\{[\s\S]*\}|\[[\s\S]*\])/)
       parsed = JSON.parse(jsonMatch ? jsonMatch[0] : cleaned)
-    } catch (e) {
+    } catch (_e) {
       console.error('Failed to parse Groq response:', cleaned)
       throw new Error('Invalid JSON response from AI')
     }
 
     return NextResponse.json({ success: true, data: parsed })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[/api/ai/ocr]', err)
-    return NextResponse.json({ error: err.message || 'OCR failed' }, { status: 500 })
+    return NextResponse.json({ error: (err as Error).message || 'OCR failed' }, { status: 500 })
   }
 }
