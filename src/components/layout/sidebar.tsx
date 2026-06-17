@@ -28,7 +28,7 @@ const navItems: NavItem[] = [
   { href: '/expenses', label: 'Expenses', icon: Receipt },
   { href: '/goals', label: 'Goals', icon: Target },
   { href: '/reports', label: 'Forecast', icon: TrendingUp },
-  { href: '/assistant', label: 'AI Agents', icon: Sparkles },
+  { href: '/assistant', label: 'Ask AI', icon: Sparkles },
   { href: '/discover', label: 'Discover', icon: BookOpen },
 ]
 
@@ -84,17 +84,6 @@ export function TopNav({ user, alertCount = 0 }: TopNavProps) {
 
       {/* Right actions */}
       <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
-        {/* Ask AI button */}
-        <Link href="/assistant">
-          <Button
-            size="sm"
-            className="h-8 gap-1.5 text-xs font-bold rounded-full px-3 bg-primary text-primary-foreground hover:bg-primary/90 neon-glow-sm hidden sm:flex"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            Ask AI
-          </Button>
-        </Link>
-
         {/* Theme toggle */}
         <Button
           variant="ghost"
