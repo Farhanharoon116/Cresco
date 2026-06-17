@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { runFinancialCoach } from '@/lib/ai/agents/coach'
 import { getUser } from '@/actions/auth'
