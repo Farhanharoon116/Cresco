@@ -1,26 +1,32 @@
 # Cresco 📈
 **Your Intelligent Personal Finance Companion**
 
-Cresco is a modern, AI-powered personal finance dashboard built to help students and professionals track expenses, manage budgets, discover resources, and achieve savings goals.
+![Cresco Banner](https://via.placeholder.com/1200x400?text=Cresco+-+AI+Personal+Finance)
+
+Cresco is a modern, AI-powered personal finance dashboard built to help students and professionals track expenses, manage budgets, discover resources, and achieve savings goals. By leveraging cutting-edge LLMs (Google Gemini & Groq), Cresco transforms mundane financial tracking into an engaging, proactive, and personalized experience.
 
 ---
 
-## 🌟 Key Features
+## 🌟 Comprehensive Features
 
 ### 💰 Core Financial Tracking
-- **Interactive Dashboard:** View real-time spending summaries, remaining budget, and AI-predicted end-of-month balances.
-- **Expense Categorization:** Easily log expenses with automatic categorization (Housing, Food, Transport, etc.).
-- **Savings Goals:** Set specific targets (e.g., "New Laptop", "Emergency Fund") and track your progress visually.
+- **Interactive Dashboard:** View real-time spending summaries, remaining budget, and dynamic visual charts (pie charts for categories, line charts for spending trends).
+- **Expense Management:** Easily log expenses manually or via natural language. Automatic categorization assigns expenses to the right buckets (Housing, Food, Transport, etc.).
+- **Smart Budgets:** Set monthly budgets per category and receive intelligent alerts when approaching or exceeding limits.
+- **Savings Goals:** Set specific targets (e.g., "New Laptop", "Emergency Fund") and track your progress visually with milestone markers.
+- **Recurring Expenses:** Track subscriptions and fixed costs with automated logging and upcoming payment reminders.
 
 ### 🤖 AI-Powered Insights
-- **Monthly Reports:** Generate comprehensive monthly financial reports with personalized savings ideas using AI.
-- **Intelligent Forecasting:** AI predicts your future balance based on your daily spending velocity.
-- **Discover Tab:** An AI-curated discovery engine that recommends books, courses, tools, and games strictly tailored to your *remaining budget* and *personal interests*. 
+- **Dual-Agent Architecture:** Utilizes Groq for lightning-fast tasks (categorization, NLP parsing) and Gemini for deep reasoning (reports, forecasting).
+- **Monthly Reports & Health Score:** Receive comprehensive monthly financial reports with a calculated "Financial Health Score" and personalized savings ideas.
+- **Intelligent Forecasting:** AI predicts your end-of-month balance based on your daily spending velocity and upcoming recurring expenses.
+- **Discover Tab (Recommendations):** An AI-curated discovery engine that recommends books, courses, tools, and games strictly tailored to your *remaining budget* and *personal interests*.
+- **Anomaly Detection:** Get instantly notified if an expense falls outside your typical spending patterns.
 
 ### 🛡️ Secure Admin Portal
-- **Global Broadcasts:** Send platform-wide alerts and announcements.
+- **Global Broadcasts:** Send platform-wide alerts and announcements to all users.
 - **User Management:** View detailed user metrics, monitor onboarding status, and manage platform safety.
-- **Data Export:** Instantly export user directories to CSV.
+- **Data Export:** Instantly export user directories to CSV for external analysis.
 
 ---
 
@@ -29,21 +35,22 @@ Cresco is a modern, AI-powered personal finance dashboard built to help students
 Cresco is built on a cutting-edge, highly performant stack:
 
 ### Frontend
-- **Framework:** [Next.js 15](https://nextjs.org/) (App Router)
+- **Framework:** [Next.js 15](https://nextjs.org/) (App Router) for server-side rendering and optimal performance.
 - **UI Library:** [React 19](https://react.dev/)
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) for utility-first, fully responsive design.
 - **Components:** [Base UI](https://base-ui.com/) (Headless accessible components) & custom Shadcn-inspired blocks.
 - **Animations:** [Motion (Framer Motion)](https://motion.dev/) for buttery smooth micro-interactions and page transitions.
+- **Charts:** Recharts for dynamic data visualization.
 - **Icons:** [Lucide React](https://lucide.dev/)
 
 ### Backend & Database
-- **Database:** [Supabase](https://supabase.com/) (PostgreSQL)
+- **Database:** [Supabase](https://supabase.com/) (PostgreSQL) with Row-Level Security (RLS) for robust data protection.
 - **Authentication:** Custom JWT-based session management using `jose` over secure HTTP-only cookies.
-- **API & Routing:** Next.js Server Actions and Route Handlers.
+- **API & Routing:** Next.js Server Actions for seamless mutations and Route Handlers for standard APIs.
 
 ### AI Integration
-- **LLM Providers:** Integrated with [Google Gemini](https://deepmind.google/technologies/gemini/) (Primary) and Groq.
-- **Structured Outputs:** Custom JSON parsing pipelines ensure the AI always returns perfectly typed data for UI rendering.
+- **LLM Providers:** Integrated with [Google Gemini](https://deepmind.google/technologies/gemini/) (Primary) and [Groq](https://groq.com/).
+- **Structured Outputs:** Custom JSON parsing pipelines ensure the AI always returns perfectly typed data (Zod schemas) for UI rendering.
 
 ---
 
@@ -51,6 +58,7 @@ Cresco is built on a cutting-edge, highly performant stack:
 
 ```text
 cresco/
+├── docs/              # System architecture, ERDs, and workflow diagrams
 ├── src/
 │   ├── actions/       # Next.js Server Actions (Database mutations, AI calls)
 │   ├── app/           # Next.js App Router pages and layouts
@@ -79,6 +87,7 @@ cresco/
 - Node.js 18+
 - Supabase Project (for PostgreSQL database)
 - Gemini API Key
+- Groq API Key (Optional but recommended for speed)
 
 ### 1. Clone the repository
 ```bash
@@ -89,6 +98,10 @@ cd cresco
 ### 2. Install Dependencies
 ```bash
 npm install
+# or
+yarn install
+# or
+pnpm install
 ```
 
 ### 3. Environment Setup
@@ -98,25 +111,23 @@ cp .env.example .env.local
 ```
 Fill in the following values in your `.env.local`:
 ```env
-# Supabase
+# Supabase Configuration
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # AI Providers
 GEMINI_API_KEY=your_gemini_api_key
+GROQ_API_KEY=your_groq_api_key
 
 # Admin Settings
 ADMIN_PASSWORD=your_secure_admin_password
 ```
 
 ### 4. Database Setup
-Ensure your Supabase project contains the following tables:
-- `users`
-- `expenses`
-- `categories`
-- `savings_goals`
-- `alerts`
-- `interest_profiles`
+Ensure your Supabase project contains the tables defined in our ERD (see `docs/diagrams/02-database-erd.md`), including:
+- `users`, `incomes`, `categories`, `expenses`, `budgets`, `savings_goals`, `alerts`, `forecasts`, `monthly_reports`, `recurring_expenses`, `interest_profiles`, `recommendations`.
+
+*Note: Migrations are intentionally excluded from the repository to prevent conflicts. Please initialize the schema manually or via your own Supabase CLI flow.*
 
 ### 5. Run the Development Server
 ```bash
@@ -135,6 +146,16 @@ The backend Admin Portal is located at `/admin`.
 
 ## 🎨 Design Philosophy
 Cresco follows a **glassmorphic**, premium aesthetic. We utilize a carefully curated palette consisting of `#F5F5F5` (Background), `#424242` (Charcoal Text), `#48CFCB` (Primary Bright), and `#229799` (Secondary Deep). The interface emphasizes bold typography, generous whitespace, and subtle entrance animations to make financial management feel less like a chore and more like an experience.
+
+---
+
+## 🤝 Contributing
+Contributions are welcome! If you'd like to improve Cresco:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/amazing-feature`).
+3. Commit your changes (`git commit -m 'Add amazing feature'`).
+4. Push to the branch (`git push origin feature/amazing-feature`).
+5. Open a Pull Request.
 
 ---
 
