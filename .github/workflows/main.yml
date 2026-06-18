@@ -1,0 +1,14 @@
+name: Clear Deployments
+
+on:
+  workflow_dispatch: # Allows you to run this manually
+
+jobs:
+  delete-deployments:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old deployments
+        uses: stransb/delete-deployments-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          all: true # This will wipe out all deployment history records
