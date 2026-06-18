@@ -1,23 +1,23 @@
-# Cresco 📈
+# Cresco 
 **Your Intelligent Personal Finance Companion**
 
 Cresco is a modern, AI-powered personal finance dashboard built to help students and professionals track expenses, manage budgets, discover resources, and achieve savings goals. By leveraging cutting-edge LLMs (Google Gemini & Groq), Cresco transforms mundane financial tracking into an engaging, proactive, and personalized experience.
 
 ---
 
-## 🌟 Comprehensive Features
+##  Comprehensive Features
 
-### 💰 Core Financial Tracking
+###  Core Financial Tracking
 - **Interactive Dashboard:** View real-time spending summaries, remaining budget, and dynamic visual charts (pie charts for categories, line charts for spending trends).
 - **Expense Management:** Easily log expenses manually or via natural language. Automatic categorization assigns expenses to the right buckets (Housing, Food, Transport, etc.).
 - **Smart Budgets:** Set monthly budgets per category and receive intelligent alerts when approaching or exceeding limits.
 - **Savings Goals:** Set specific targets (e.g., "New Laptop", "Emergency Fund") and track your progress visually with milestone markers.
 - **Recurring Expenses:** Track subscriptions and fixed costs with automated logging and upcoming payment reminders.
 
-### 🤖 AI-Powered Insights
+### AI-Powered Insights
 - **Dual-Agent Architecture:** Utilizes Groq for lightning-fast tasks (categorization, NLP parsing) and Gemini for deep reasoning (reports, forecasting).
 
-#### 🧠 Integrated AI Agents
+####  Integrated AI Agents
 Our platform employs specialized agents to handle specific financial workflows:
 - **Categorization (Groq):** Instantly tags every expense.
 - **NL Parser (Groq):** Understands natural language input.
@@ -28,14 +28,14 @@ Our platform employs specialized agents to handle specific financial workflows:
 - **Recommendations (Gemini):** Personalizes savings opportunities and resources.
 - **Chat Assistant (Gemini):** Answers any financial question you might have.
 
-### 🛡️ Secure Admin Portal
+###  Secure Admin Portal
 - **Global Broadcasts:** Send platform-wide alerts and announcements to all users.
 - **User Management:** View detailed user metrics, monitor onboarding status, and manage platform safety.
 - **Data Export:** Instantly export user directories to CSV for external analysis.
 
 ---
 
-## 🏗️ Architecture & Tech Stack
+##  Architecture & Tech Stack
 
 Cresco is built on a cutting-edge, highly performant stack:
 
@@ -86,7 +86,7 @@ cresco/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 - Node.js 18+
@@ -142,19 +142,19 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 🔐 Admin Portal Access
+##  Admin Portal Access
 The backend Admin Portal is located at `/admin`.
 1. Navigate to `http://localhost:3000/admin/login`
 2. Enter the password defined in your `.env.local` (default: `admin123`)
 
 ---
 
-## 🎨 Design Philosophy
+##  Design Philosophy
 Cresco follows a **glassmorphic**, premium aesthetic. We utilize a carefully curated palette consisting of `#F5F5F5` (Background), `#424242` (Charcoal Text), `#48CFCB` (Primary Bright), and `#229799` (Secondary Deep). The interface emphasizes bold typography, generous whitespace, and subtle entrance animations to make financial management feel less like a chore and more like an experience.
 
 ---
 
-## 🤝 Contributing
+##  Contributing
 Contributions are welcome! If you'd like to improve Cresco:
 1. Fork the repository.
 2. Create a feature branch (`git checkout -b feature/amazing-feature`).
