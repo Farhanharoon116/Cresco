@@ -1,9 +1,8 @@
 name: Clear Deployments
 
 on:
-  workflow_dispatch: # Allows you to run this manually
+  workflow_dispatch: 
 
- Force standard permissions to allow deleting deployment history
 permissions:
   deployments: write
   contents: write
@@ -19,7 +18,6 @@ jobs:
           owner_repo="${{ github.repository }}"
           echo "Fetching deployments for $owner_repo..."
           
-          # 1. Get all deployment IDs
           deployments=$(gh api repos/$owner_repo/deployments --jq '.[].id')
           
           if [ -z "$deployments" ]; then
@@ -27,14 +25,9 @@ jobs:
             exit 0
           fi
           
-          # 2. Loop through and delete each one
           for id in $deployments; do
             echo "Processing deployment ID: $id"
-            
-            # Set to inactive first (GitHub requires this before deletion)
             gh api -X POST repos/$owner_repo/deployments/$id/statuses -f state=inactive || true
-            
-            # Delete it
             gh api -X DELETE repos/$owner_repo/deployments/$id
             echo "Successfully deleted deployment ID: $id"
           done
