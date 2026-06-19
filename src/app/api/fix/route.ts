@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { getUser } from '@/actions/auth'
 import { DEFAULT_CATEGORIES } from '@/lib/constants'
 
 export async function GET() {
@@ -27,7 +26,7 @@ export async function GET() {
     await supabase.from('categories').insert(toInsert)
   }
 
-  const { data: finalCategories } = await supabase.from('categories').select('name').eq('user_id', user.id)
+  const { data: finalCategories } = await supabase.from('categories').select('name').eq('user_id', userId)
 
   return NextResponse.json({ 
     success: true, 

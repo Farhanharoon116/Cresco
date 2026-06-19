@@ -122,10 +122,12 @@ Rules:
         budget_context: { amount: availableBudget, currency }
       },
     })
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('[/api/ai/discover]', err)
-    
-    if (err?.isRateLimit || err?.provider === 'parser' || err?.message?.includes('503') || err?.message?.includes('high demand') || err?.message?.includes('overloaded') || err?.message?.includes('Failed to parse')) {
+
+    const e = err as { isRateLimit?: boolean; provider?: string; message?: string } | undefined
+
+    if (e?.isRateLimit || e?.provider === 'parser' || e?.message?.includes('503') || e?.message?.includes('high demand') || e?.message?.includes('overloaded') || e?.message?.includes('Failed to parse')) {
       return NextResponse.json({
         success: true,
         data: {

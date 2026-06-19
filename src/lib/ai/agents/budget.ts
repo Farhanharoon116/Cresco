@@ -64,34 +64,36 @@ export async function runBudgetMonitor(userId: string): Promise<void> {
           const alertKey = `${budget.id}-${threshold}`
           if (alertedKeys.has(alertKey)) break // Already alerted for this threshold
 
-          let severity: 'info' | 'warning' | 'critical'
-          let title: string
-          let message: string
-
-          if (threshold >= 100) {
-            severity = 'critical'
-            title = `${catIcon} Budget Exceeded: ${catName}`
-            message = `You've exceeded your ${catName} budget! Spent ${budget.spent_amount} of ${budget.limit_amount} limit (${pct}%). Consider reviewing your spending.`
-          } else if (threshold >= 90) {
-            severity = 'critical'
-            title = `${catIcon} Almost Over Budget: ${catName}`
-            message = `${catName} budget is at ${pct}% — only ${(budget.limit_amount - budget.spent_amount).toFixed(0)} remaining. Be careful!`
-          } else if (threshold >= 75) {
-            severity = 'warning'
-            title = `${catIcon} Budget Warning: ${catName}`
-            message = `${catName} spending is at ${pct}% of your monthly limit. You have ${(budget.limit_amount - budget.spent_amount).toFixed(0)} left.`
-          } else {
-            severity = 'info'
-            title = `${catIcon} Budget Check: ${catName}`
-            message = `${catName} is at ${pct}% of your monthly budget. You're halfway there — keep an eye on it.`
-          }
+          const payload = threshold >= 100
+            ? {
+                severity: 'critical' as const,
+                title: `${catIcon} Budget Exceeded: ${catName}`,
+                message: `You've exceeded your ${catName} budget! Spent ${budget.spent_amount} of ${budget.limit_amount} limit (${pct}%). Consider reviewing your spending.`,
+              }
+            : threshold >= 90
+            ? {
+                severity: 'critical' as const,
+                title: `${catIcon} Almost Over Budget: ${catName}`,
+                message: `${catName} budget is at ${pct}% — only ${(budget.limit_amount - budget.spent_amount).toFixed(0)} remaining. Be careful!`,
+              }
+            : threshold >= 75
+            ? {
+                severity: 'warning' as const,
+                title: `${catIcon} Budget Warning: ${catName}`,
+                message: `${catName} spending is at ${pct}% of your monthly limit. You have ${(budget.limit_amount - budget.spent_amount).toFixed(0)} left.`,
+              }
+            : {
+                severity: 'info' as const,
+                title: `${catIcon} Budget Check: ${catName}`,
+                message: `${catName} is at ${pct}% of your monthly budget. You're halfway there — keep an eye on it.`,
+              }
 
           newAlerts.push({
             user_id: userId,
             type: 'budget_threshold',
-            title,
-            message,
-            severity,
+            title: payload.title,
+            message: payload.message,
+            severity: payload.severity,
             metadata: { budget_id: budget.id, threshold, percentage: pct, category: catName },
           })
           break // Only alert for the highest threshold breached
@@ -109,7 +111,7 @@ export async function runBudgetMonitor(userId: string): Promise<void> {
         if (totalPct >= threshold && threshold >= 90) {
           const alertKey = `total-${threshold}`
           if (!alertedKeys.has(alertKey)) {
-            let severity: 'info' | 'warning' | 'critical' = 'critical'
+            const severity: 'info' | 'warning' | 'critical' = 'critical'
             let title = 'Overall Budget Warning'
             let message = ''
 

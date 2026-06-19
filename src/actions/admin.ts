@@ -2,7 +2,7 @@
 
 import { cookies } from 'next/headers'
 import { signJWT, verifyJWT, SessionPayload } from '@/lib/auth/jwt'
-import { createClient, createAdminClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 const ADMIN_SESSION_COOKIE = 'cresco_admin_session'
