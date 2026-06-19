@@ -34,12 +34,19 @@ export const CURRENCIES = [
 
 export const DEFAULT_CATEGORIES = [
   { name: 'Food & Dining', icon: '🍔', color: '#10b981' },
+  { name: 'Groceries', icon: '🛒', color: '#84cc16' },
+  { name: 'Housing', icon: '🏠', color: '#6366f1' },
+  { name: 'Utilities', icon: '💡', color: '#eab308' },
   { name: 'Transport', icon: '🚗', color: '#3b82f6' },
   { name: 'Shopping', icon: '🛍️', color: '#a855f7' },
+  { name: 'Personal Care', icon: '🧴', color: '#f472b6' },
   { name: 'Education', icon: '📚', color: '#f59e0b' },
   { name: 'Entertainment', icon: '🎮', color: '#ef4444' },
   { name: 'Subscriptions', icon: '📱', color: '#06b6d4' },
   { name: 'Health', icon: '💊', color: '#ec4899' },
+  { name: 'Insurance', icon: '🛡️', color: '#14b8a6' },
+  { name: 'Savings & Investments', icon: '📈', color: '#8b5cf6' },
+  { name: 'Gifts & Donations', icon: '🎁', color: '#f43f5e' },
   { name: 'Other', icon: '📦', color: '#6b7280' },
 ]
 

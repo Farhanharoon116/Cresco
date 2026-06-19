@@ -321,7 +321,7 @@ export function ChatInterface() {
         </div>
         <div className="flex items-center justify-between mt-2">
           <p className="text-[10px] text-muted-foreground">
-            Powered by Gemini 2.5 Flash Lite · Real financial data · Not financial advice
+            Powered by AI · Real financial data · Not financial advice
           </p>
           {messages.length > 0 && (
             <p className="text-[10px] text-muted-foreground">

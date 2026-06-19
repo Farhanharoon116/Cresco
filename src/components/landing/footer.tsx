@@ -71,7 +71,7 @@ export function LandingFooter() {
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               All systems operational
             </span>
-            <span>Powered by <span className="text-primary font-medium">Gemini + Groq AI</span></span>
+            <span>Powered by <span className="text-primary font-medium">AI</span></span>
           </div>
         </div>
       </div>

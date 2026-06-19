@@ -48,6 +48,17 @@ export async function getAdminDashboardData() {
     redirect('/admin/login')
   }
 
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    // Hide error and return empty state if keys are missing
+    return {
+      success: true,
+      data: {
+        stats: { totalUsers: 0, totalExpenses: 0, totalGoals: 0 },
+        users: []
+      }
+    }
+  }
+
   const supabase = createAdminClient()
 
   // We fetch standard stats assuming RLS allows anon select on these
@@ -76,6 +87,11 @@ export async function getAdminDashboardData() {
 export async function deleteUser(userId: string) {
   const session = await getAdminSession()
   if (!session) return { success: false, error: 'Unauthorized' }
+
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { success: false, error: 'Supabase URL or Service Role Key is missing.' }
+  }
+
   const supabase = createAdminClient()
   
   const { error } = await supabase.from('users').delete().eq('id', userId)
@@ -92,6 +108,10 @@ export async function broadcastAlert(formData: FormData) {
   const message = formData.get('message') as string
   
   if (!title || !message) return { success: false, error: 'Title and message required' }
+
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { success: false, error: 'Supabase URL or Service Role Key is missing.' }
+  }
   
   const supabase = createAdminClient()
   
@@ -114,3 +134,4 @@ export async function broadcastAlert(formData: FormData) {
   
   return { success: true, count: users.length }
 }
+

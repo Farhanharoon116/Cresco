@@ -73,7 +73,7 @@ export function LandingHero() {
           {[
             { icon: TrendingUp, value: '8 AI', label: 'Agents working for you' },
             { icon: Shield, value: '100%', label: 'Free forever' },
-            { icon: Sparkles, value: '2 LLMs', label: 'Groq + Gemini' },
+            { icon: Sparkles, value: 'Dual AI', label: 'Fast & Smart Engines' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <stat.icon className="h-5 w-5 text-primary mx-auto mb-2" />

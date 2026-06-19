@@ -127,9 +127,7 @@ export function DiscoverPanel() {
           </div>
           <div>
             <h2 className="text-lg font-black text-foreground tracking-tight">Discover</h2>
-            <p className="text-xs text-muted-foreground">
-              Powered by <span className="text-primary font-bold">Gemini 2.5 Flash Lite</span> + Google Search
-            </p>
+            
           </div>
         </div>
         <p className="text-sm text-foreground/80 leading-relaxed mt-1">

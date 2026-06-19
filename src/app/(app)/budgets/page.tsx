@@ -14,8 +14,33 @@ export default async function BudgetsPage() {
   ])
 
   const budgets = budgetsRes.success ? budgetsRes.data : []
-  const categories = categoriesRes.data ?? []
+  let categories = categoriesRes.data ?? []
+
+  // Deduplicate fetched categories to prevent UI duplicates
+  const uniqueCategoriesMap = new Map()
+  categories.forEach(c => {
+    if (!uniqueCategoriesMap.has(c.name)) uniqueCategoriesMap.set(c.name, c)
+  })
+  categories = Array.from(uniqueCategoriesMap.values())
+
   const currency = profileData.data?.currency ?? 'USD'
+
+  const { DEFAULT_CATEGORIES } = await import('@/lib/constants')
+  const existingNames = categories.map(c => c.name)
+  const toInsert = DEFAULT_CATEGORIES.filter(c => !existingNames.includes(c.name)).map(c => ({
+    user_id: user!.id,
+    name: c.name,
+    icon: c.icon,
+    color: c.color,
+    is_default: true
+  }))
+
+  if (toInsert.length > 0) {
+    const { data: inserted } = await supabase.from('categories').insert(toInsert).select()
+    if (inserted) {
+      categories = [...categories, ...inserted].sort((a, b) => a.name.localeCompare(b.name))
+    }
+  }
 
   return (
     <div className="space-y-6">

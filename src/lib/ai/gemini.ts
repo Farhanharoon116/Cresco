@@ -33,8 +33,8 @@ export async function callGemini(
   } catch (err: unknown) {
     const e = err as { status?: number; message?: string; toString?: () => string }
     const msg = e?.message ?? e?.toString?.() ?? 'Gemini call failed'
-    if (msg.includes('429') || msg.includes('quota')) {
-      throw new AIProviderError('Gemini quota exceeded', 'gemini', true)
+    if (msg.includes('429') || msg.includes('quota') || msg.includes('503') || msg.includes('high demand') || msg.includes('overloaded')) {
+      throw new AIProviderError('Gemini API is currently overloaded or quota exceeded', 'gemini', true)
     }
     throw new AIProviderError(msg, 'gemini')
   }

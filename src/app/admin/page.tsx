@@ -6,8 +6,14 @@ import { BroadcastButton, ExportCsvButton, DeleteUserButton } from './components
 export default async function AdminDashboardPage() {
   const result = await getAdminDashboardData()
   
-  if (!result.success || !result.data) {
-    return <div className="text-destructive font-medium">Failed to load admin data.</div>
+  if (!result || !result.success || !result.data) {
+    return (
+      <div className="p-6">
+        <div className="text-destructive font-medium border border-destructive/20 bg-destructive/10 p-4 rounded-md">
+          {result?.error || 'Failed to load admin data.'}
+        </div>
+      </div>
+    )
   }
 
   const { stats, users } = result.data

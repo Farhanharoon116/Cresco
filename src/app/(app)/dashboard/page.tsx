@@ -39,7 +39,15 @@ export default async function DashboardPage() {
   const budgets = budgetsData.data ?? []
   const currency = profileData.data?.currency ?? 'USD'
   const userName = profileData.data?.full_name ?? 'Student'
-  const categories = categoriesData.data ?? []
+  let categories = categoriesData.data ?? []
+
+  // Deduplicate fetched categories to prevent UI duplicates
+  const uniqueCategoriesMap = new Map()
+  categories.forEach(c => {
+    if (!uniqueCategoriesMap.has(c.name)) uniqueCategoriesMap.set(c.name, c)
+  })
+  categories = Array.from(uniqueCategoriesMap.values())
+
   const latestInsight = latestAlertData.data?.message ?? null
 
   let currentInsight = latestInsight

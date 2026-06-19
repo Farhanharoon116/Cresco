@@ -4,14 +4,14 @@ import { motion } from 'motion/react'
 import { Bot, Zap, Brain } from 'lucide-react'
 
 const agents = [
-  { name: 'Categorization', provider: 'Groq', desc: 'Instantly tags every expense', speed: 'Fast' },
-  { name: 'NL Parser', provider: 'Groq', desc: 'Understands natural language input', speed: 'Fast' },
+  { name: 'Categorization', provider: 'Real-time AI', desc: 'Instantly tags every expense', speed: 'Fast' },
+  { name: 'NL Parser', provider: 'Real-time AI', desc: 'Understands natural language input', speed: 'Fast' },
   { name: 'Budget Monitor', provider: 'DB Trigger', desc: 'Fires alerts at budget thresholds', speed: 'Instant' },
-  { name: 'Forecast', provider: 'Gemini', desc: 'Predicts your month-end balance', speed: 'Smart' },
-  { name: 'Anomaly Detector', provider: 'Groq', desc: 'Flags unusual spending patterns', speed: 'Fast' },
-  { name: 'Monthly Report', provider: 'Gemini', desc: 'Generates financial health reports', speed: 'Deep' },
-  { name: 'Recommendations', provider: 'Gemini', desc: 'Personalizes savings opportunities', speed: 'Smart' },
-  { name: 'Chat Assistant', provider: 'Gemini', desc: 'Answers any financial question', speed: 'Deep' },
+  { name: 'Forecast', provider: 'Analysis AI', desc: 'Predicts your month-end balance', speed: 'Smart' },
+  { name: 'Anomaly Detector', provider: 'Real-time AI', desc: 'Flags unusual spending patterns', speed: 'Fast' },
+  { name: 'Monthly Report', provider: 'Analysis AI', desc: 'Generates financial health reports', speed: 'Deep' },
+  { name: 'Recommendations', provider: 'Analysis AI', desc: 'Personalizes savings opportunities', speed: 'Smart' },
+  { name: 'Chat Assistant', provider: 'Analysis AI', desc: 'Answers any financial question', speed: 'Deep' },
 ]
 
 export function LandingAI() {
@@ -27,17 +27,17 @@ export function LandingAI() {
           <div className="inline-flex items-center gap-2 text-sm text-primary font-medium mb-4">
             <Brain className="h-4 w-4" /> Dual AI engine
           </div>
-          <h2 className="text-4xl font-bold mb-4">8 agents, 2 providers, 1 goal</h2>
+          <h2 className="text-4xl font-bold mb-4">8 agents, dual engines, 1 goal</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Groq handles speed-critical tasks. Gemini handles deep reasoning.
+            Our real-time engine handles speed-critical tasks. Our analytical engine handles deep reasoning.
             Automatic failover ensures you always get an answer.
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           {[
-            { name: 'Groq', icon: Zap, color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/20', desc: 'Llama 3.3 70B — Ultra-fast inference for real-time tasks' },
-            { name: 'Gemini', icon: Brain, color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20', desc: 'Gemini 2.0 Flash — Deep reasoning for complex analysis' },
+            { name: 'Real-time Engine', icon: Zap, color: 'text-yellow-400', bg: 'bg-yellow-400/10', border: 'border-yellow-400/20', desc: 'Ultra-fast inference for real-time tasks and immediate interactions' },
+            { name: 'Analysis Engine', icon: Brain, color: 'text-blue-400', bg: 'bg-blue-400/10', border: 'border-blue-400/20', desc: 'Deep reasoning for complex financial analysis and predictions' },
           ].map((p) => (
             <motion.div
               key={p.name}

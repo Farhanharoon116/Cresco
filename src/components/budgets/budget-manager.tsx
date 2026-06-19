@@ -74,10 +74,24 @@ export function BudgetManager({ budgets, categories, currency = 'USD' }: BudgetM
               <div className="space-y-1.5">
                 <Label>Category</Label>
                 <Select value={catId} onValueChange={(v) => v && setCatId(v)}>
-                  <SelectTrigger className="w-48"><SelectValue placeholder="Pick category" /></SelectTrigger>
+                  <SelectTrigger className="w-48">
+                    {catId ? (
+                      <span className="flex items-center gap-2 text-sm">
+                        <span>{availableCategories.find(c => c.id === catId)?.icon}</span>
+                        <span className="truncate">{availableCategories.find(c => c.id === catId)?.name}</span>
+                      </span>
+                    ) : (
+                      <SelectValue placeholder="Pick category" />
+                    )}
+                  </SelectTrigger>
                   <SelectContent>
                     {availableCategories.map(c => (
-                      <SelectItem key={c.id} value={c.id}>{c.icon} {c.name}</SelectItem>
+                      <SelectItem key={c.id} value={c.id}>
+                        <span className="flex items-center gap-2">
+                          <span>{c.icon}</span>
+                          <span>{c.name}</span>
+                        </span>
+                      </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>

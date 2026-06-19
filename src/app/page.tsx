@@ -12,7 +12,7 @@ import { LandingFooter } from "@/components/landing/footer";
 
 export const metadata = {
   title: 'Cresco — AI-Powered Finance for Students',
-  description: 'Track expenses, set budgets, crush savings goals and get AI-powered financial coaching. Built for students, powered by Gemini & Groq.',
+  description: 'Track expenses, set budgets, crush savings goals and get AI-powered financial coaching. Built for students.',
 }
 
 export default async function LandingPage() {

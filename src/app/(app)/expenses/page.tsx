@@ -24,6 +24,14 @@ export default async function ExpensesPage({ searchParams }: { searchParams: Pro
   ])
 
   let categories = categoriesRes.data ?? []
+
+  // Deduplicate fetched categories to prevent UI duplicates
+  const uniqueCategoriesMap = new Map()
+  categories.forEach(c => {
+    if (!uniqueCategoriesMap.has(c.name)) uniqueCategoriesMap.set(c.name, c)
+  })
+  categories = Array.from(uniqueCategoriesMap.values())
+
   const { expenses = [], total = 0 } = expensesRes.success ? expensesRes.data : {}
   const currency = profileData.data?.currency ?? 'USD'
   const recurring = recurringRes.success ? recurringRes.data : []

@@ -122,8 +122,56 @@ Rules:
         budget_context: { amount: availableBudget, currency }
       },
     })
-  } catch (err) {
+  } catch (err: any) {
     console.error('[/api/ai/discover]', err)
+    
+    if (err?.isRateLimit || err?.provider === 'parser' || err?.message?.includes('503') || err?.message?.includes('high demand') || err?.message?.includes('overloaded') || err?.message?.includes('Failed to parse')) {
+      return NextResponse.json({
+        success: true,
+        data: {
+          items: [
+            {
+              id: 'mock_1',
+              type: 'course',
+              title: 'CS50: Introduction to Computer Science',
+              description: "Harvard University's introduction to the intellectual enterprises of computer science and the art of programming.",
+              platform: 'edX',
+              url: 'https://www.edx.org/course/introduction-computer-science-harvardx-cs50x',
+              price: 'Free to audit',
+              free: true,
+              tags: ['programming', 'computer science']
+            },
+            {
+              id: 'mock_2',
+              type: 'book',
+              title: 'The Psychology of Money',
+              description: "Timeless lessons on wealth, greed, and happiness. Doing well with money isn't necessarily about what you know.",
+              platform: 'Amazon',
+              url: 'https://www.amazon.com/Psychology-Money-Timeless-lessons-happiness/dp/0857197681',
+              price: `~15 ${currency || 'USD'}`,
+              free: false,
+              tags: ['finance', 'psychology']
+            },
+            {
+              id: 'mock_3',
+              type: 'tool',
+              title: 'Notion',
+              description: 'The all-in-one workspace for your notes, tasks, wikis, and databases.',
+              platform: 'Notion',
+              url: 'https://www.notion.so/',
+              price: 'Free plan',
+              free: true,
+              tags: ['productivity', 'organization']
+            }
+          ],
+          search_summary: "AI services are currently experiencing high demand. Showing a curated selection of fallback resources instead.",
+          interests: interests || ['programming', 'finance'],
+          sources: [],
+          budget_context: { amount: availableBudget || 100, currency: currency || 'USD' }
+        },
+      })
+    }
+
     return NextResponse.json({ error: 'Discovery search failed. Please try again.' }, { status: 500 })
   }
 }
