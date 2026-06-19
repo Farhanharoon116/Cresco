@@ -10,7 +10,7 @@ export default async function AdminDashboardPage() {
     return (
       <div className="p-6">
         <div className="text-destructive font-medium border border-destructive/20 bg-destructive/10 p-4 rounded-md">
-          {result?.error || 'Failed to load admin data.'}
+          {(result as { error?: string })?.error ?? 'Failed to load admin data.'}
         </div>
       </div>
     )

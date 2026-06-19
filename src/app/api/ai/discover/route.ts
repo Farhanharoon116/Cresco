@@ -150,7 +150,7 @@ Rules:
               description: "Timeless lessons on wealth, greed, and happiness. Doing well with money isn't necessarily about what you know.",
               platform: 'Amazon',
               url: 'https://www.amazon.com/Psychology-Money-Timeless-lessons-happiness/dp/0857197681',
-              price: `~15 ${currency || 'USD'}`,
+              price: `~15 USD`,
               free: false,
               tags: ['finance', 'psychology']
             },
@@ -167,9 +167,9 @@ Rules:
             }
           ],
           search_summary: "AI services are currently experiencing high demand. Showing a curated selection of fallback resources instead.",
-          interests: interests || ['programming', 'finance'],
+          interests: ['programming', 'finance'],
           sources: [],
-          budget_context: { amount: availableBudget || 100, currency: currency || 'USD' }
+          budget_context: { amount: 100, currency: 'USD' }
         },
       })
     }

@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs'
+import path from 'path'
 
 const files = [
   'src/actions/budgets.ts',
@@ -38,13 +38,13 @@ for (const relPath of files) {
     if (!content.includes('import { getUser }')) {
       // Find the last import statement
       const importMatches = [...content.matchAll(/^import .*;?$/gm)];
-      if (importMatches.length > 0) {
-        const lastMatch = importMatches[importMatches.length - 1];
-        const index = lastMatch.index + lastMatch[0].length;
-        content = content.slice(0, index) + '\nimport { getUser } from \'@/actions/auth\'' + content.slice(index);
-      } else {
-        content = 'import { getUser } from \'@/actions/auth\'\n' + content;
-      }
+        if (importMatches.length > 0) {
+          const lastMatch = importMatches[importMatches.length - 1];
+          const index = lastMatch.index + lastMatch[0].length;
+          content = content.slice(0, index) + "\nimport { getUser } from '@/actions/auth'" + content.slice(index);
+        } else {
+          content = "import { getUser } from '@/actions/auth'\n" + content;
+        }
     }
   }
 

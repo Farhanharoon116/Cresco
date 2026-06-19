@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { verifyJWT } from '@/lib/auth/jwt'
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({ request })
+  const response = NextResponse.next({ request })
 
   const token = request.cookies.get('cresco_session')?.value
   let user = null

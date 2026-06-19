@@ -52,7 +52,8 @@ export default async function DashboardPage() {
 
   let currentInsight = latestInsight
   if (!currentInsight && dashboard?.summary) {
-    const { total_spent, total_budget } = dashboard.summary
+    const { total_spent, remaining_budget } = dashboard.summary
+    const total_budget = (total_spent ?? 0) + (remaining_budget ?? 0)
     if (total_budget > 0) {
       const percentage = Math.round((total_spent / total_budget) * 100)
       const today = new Date()
